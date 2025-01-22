@@ -1,13 +1,13 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import logger from '../helpers/logger';
-import type { PetRepository } from '../repositories/pets.repository';
+import type { PetService } from '../services/pets.service';
 
 export class PetsController {
-  private petRepository: PetRepository;
+  private petService: PetService;
 
-  constructor(petRepository: PetRepository) {
-    this.petRepository = petRepository;
+  constructor(petService: PetService) {
+    this.petService = petService;
   }
 
   public async getAllPets(
@@ -16,7 +16,7 @@ export class PetsController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const pets = await this.petRepository.getAllPets();
+      const pets = await this.petService.getAllPets();
       res.json(pets);
     } catch (error) {
       logger.error('Error retrieving pets:', error);
@@ -38,7 +38,7 @@ export class PetsController {
     }
 
     try {
-      const newPet = await this.petRepository.createPet({
+      const newPet = await this.petService.createPet({
         name,
         type,
         age,
@@ -64,7 +64,7 @@ export class PetsController {
     }
 
     try {
-      const updatedPet = await this.petRepository.updatePet(id, {
+      const updatedPet = await this.petService.updatePet(id, {
         name,
         type,
         age,
@@ -95,7 +95,7 @@ export class PetsController {
     }
 
     try {
-      const deleted = await this.petRepository.deletePet(id);
+      const deleted = await this.petService.deletePet(id);
 
       if (!deleted) {
         res.status(404).json({ error: 'Pet not found' });
@@ -114,7 +114,7 @@ export class PetsController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const analytics = await this.petRepository.getAnalytics();
+      const analytics = await this.petService.getAnalytics();
       res.json(analytics);
     } catch (error) {
       next(error);

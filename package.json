@@ -15,7 +15,6 @@
     "check-types": "tsc --noEmit --pretty",
     "commit": "cz",
     "test": "jest",
-    "test:dev": "start-server-and-test dev http://127.0.0.1:4000 'curl --head http://127.0.0.1:4000'",
     "prepare": "husky install"
   },
   "dependencies": {

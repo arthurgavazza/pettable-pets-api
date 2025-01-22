@@ -10,6 +10,7 @@ import logger from './helpers/logger';
 import { getPool } from './infrastructure/database/database';
 import { PetRepository } from './repositories/pets.repository';
 import { seedPets } from './scripts/database/seed-data';
+import { PetService } from './services/pets.service';
 
 const initApp = async () => {
   dotenv.config();
@@ -21,13 +22,8 @@ const initApp = async () => {
   const pool = await getPool();
   await seedPets();
   const petRepository = new PetRepository(pool);
-  const petController = new PetsController(petRepository);
-
-  app.get('/', (_, res) => {
-    res.json({
-      msg: 'Hello World',
-    });
-  });
+  const petService = new PetService(petRepository);
+  const petController = new PetsController(petService);
 
   app.get('/pets', (req, res, next) =>
     petController.getAllPets(req, res, next),

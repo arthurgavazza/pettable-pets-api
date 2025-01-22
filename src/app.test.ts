@@ -4,8 +4,8 @@ import type { Pool } from 'pg';
 import request from 'supertest';
 import type { StartedTestContainer } from 'testcontainers';
 
-import { getPool } from './infrastructure/database/database';
 import { initApp } from './app';
+import { getPool } from './infrastructure/database/database';
 
 let container: StartedTestContainer;
 let pool: Pool;
