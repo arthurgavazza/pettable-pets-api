@@ -5,10 +5,11 @@ import express, { json } from 'express';
 import helmet from 'helmet';
 import pinoHttp from 'pino-http';
 
-import { getPool } from '../scripts/database/migrations/database';
 import { PetsController } from './controllers/pets.controller';
 import logger from './helpers/logger';
+import { getPool } from './infrastructure/database/database';
 import { PetRepository } from './repositories/pets.repository';
+import { seedPets } from './scripts/database/seed-data';
 
 const initApp = async () => {
   dotenv.config();
@@ -18,6 +19,7 @@ const initApp = async () => {
   app.use(pinoHttp({ logger }));
 
   const pool = await getPool();
+  await seedPets();
   const petRepository = new PetRepository(pool);
   const petController = new PetsController(petRepository);
 
@@ -43,12 +45,10 @@ const initApp = async () => {
     petController.getAnalytics(req, res, next),
   );
 
-  // 404 handler
   app.use((_, res) => {
     res.status(404).json({ error: 'NOT FOUND' });
   });
 
-  // Error handler
   app.use(
     (
       error: Error,

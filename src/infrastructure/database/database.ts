@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 
-import logger from '../../../src/helpers/logger';
+import logger from '../../helpers/logger';
 
 let pool: Pool | null = null;
 

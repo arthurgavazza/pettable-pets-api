@@ -4,7 +4,7 @@ import type { Pool } from 'pg';
 import request from 'supertest';
 import type { StartedTestContainer } from 'testcontainers';
 
-import { getPool } from '../scripts/database/migrations/database';
+import { getPool } from './infrastructure/database/database';
 import { initApp } from './app';
 
 let container: StartedTestContainer;
