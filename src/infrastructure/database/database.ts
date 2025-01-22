@@ -37,13 +37,14 @@ export const getPool = async (config?: DatabaseConfig): Promise<Pool> => {
     `);
 
     await pool.query(`
-      CREATE OR REPLACE VIEW pet_statistics AS
-      SELECT
-        COUNT(*) AS total_pets,
-        type,
-        COUNT(*) FILTER (WHERE type IS NOT NULL) AS count
-      FROM pets
-      GROUP BY type;
+     CREATE OR REPLACE VIEW pet_statistics AS  
+SELECT  
+    (SELECT COUNT(*) FROM pets) AS total_pets,  
+    type,  
+    COUNT(*) AS count  
+FROM pets  
+GROUP BY type;  
+
     `);
   }
   return pool;

@@ -93,16 +93,20 @@ export class PetRepository {
 
   async getAnalytics(): Promise<Analytics> {
     const query = `
-      SELECT
-        SUM(count) OVER () AS total_pets,
+      SELECT 
+        total_pets,
         type,
         count
       FROM pet_statistics;
     `;
     const result = await this.pool.query(query);
 
-    const totalPets =
-      result.rows.length > 0 ? parseInt(result.rows[0].total_pets, 10) : 0;
+    if (result.rows.length === 0) {
+      return { totalPets: 0, typeStatistics: [] };
+    }
+
+    // Since total_pets is the same for all rows, get it from the first row
+    const totalPets = parseInt(result.rows[0].total_pets, 10);
     const typeStatistics = result.rows.map((row) => ({
       type: row.type,
       count: parseInt(row.count, 10),

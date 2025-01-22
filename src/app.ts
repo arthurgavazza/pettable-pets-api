@@ -9,7 +9,6 @@ import { PetsController } from './controllers/pets.controller';
 import logger from './helpers/logger';
 import { getPool } from './infrastructure/database/database';
 import { PetRepository } from './repositories/pets.repository';
-import { seedPets } from './scripts/database/seed-data';
 import { PetService } from './services/pets.service';
 
 const initApp = async () => {
@@ -20,7 +19,6 @@ const initApp = async () => {
   app.use(pinoHttp({ logger }));
 
   const pool = await getPool();
-  await seedPets();
   const petRepository = new PetRepository(pool);
   const petService = new PetService(petRepository);
   const petController = new PetsController(petService);
